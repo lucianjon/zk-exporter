@@ -1,0 +1,18 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "AGuTYEcTdRoZMqVAkGKpthGJdBg=",
+			"path": "github.com/prometheus/client_golang",
+			"revision": "08fd2e12372a66e68e30523c7642e0cbc3e4fbde",
+			"revisionTime": "2017-04-01T10:34:46Z"
+		},
+		{
+			"path": "github.com/prometheus/client_golang=",
+			"revision": "v0.8.0",
+			"version": "v0.8.0"
+		}
+	],
+	"rootPath": "github.com/lucianjon/zk_exporter"
+}

@@ -2,11 +2,6 @@ package main
 
 import "github.com/prometheus/client_golang/prometheus"
 
-var mntrValues = []string{zkAvgLatency, zkMinLatency, zkMaxLatency, zkPacketsReceived, zkPacketsSent,
-	zkNumAliveConnections, zkOutstandingRequests, zkZnodeCount, zkWatchCount, zkEphemeralsCount, zkApproximateDataSize,
-	zkOpenFileDescriptorCount, zkMaxFileDescriptorCount, zkFollowers, zkSyncedFollowers, zkPendingSyncs,
-}
-
 type serverState float64
 
 const (
@@ -30,7 +25,7 @@ const (
 
 	zkOK = "zk_ok"
 
-	//server states
+	// server states
 	unknown    serverState = -1
 	follower   serverState = 1
 	leader     serverState = 2

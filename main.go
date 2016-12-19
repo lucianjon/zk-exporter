@@ -3,12 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 
 	"time"
-
-	"log"
 
 	"github.com/prometheus/client_golang/prometheus"
 )
@@ -17,11 +16,6 @@ var (
 	port         int
 	servers      string
 	pollInterval time.Duration
-)
-
-const (
-	monitorCMD = "mntr"
-	okCMD      = "ruok"
 )
 
 func init() {
@@ -35,12 +29,12 @@ func main() {
 	metrics := initMetrics()
 	servers := strings.Split(servers, ",")
 	if len(servers) == 0 {
-		log.Fatalf("At least one zookeeper server is required.")
+		log.Fatal("main: at least one zookeeper server is required")
 	}
 
 	for _, server := range servers {
-		zk := zkPoller{addr: server, pollInterval: pollInterval, metrics: metrics, fetchStats: fetch4LWStats}
-		go zk.start()
+		p := newPoller(pollInterval, metrics, newZooKeeper(server))
+		go p.pollForMetrics()
 	}
 
 	http.Handle("/metrics", prometheus.Handler())
