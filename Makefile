@@ -6,7 +6,7 @@ build: GOOS ?= ${OS}
 build: GOARCH ?= amd64
 build: test
 	rm -f zk-exporter
-	GOOS=${GOOS} GOARCH=${GOARCH} go build -ldflags "-X main.buildTime=`gdate --iso-8601=s` -X main.buildVersion=`git rev-parse HEAD | cut -c-7`" -o zk-exporter .
+	GOOS=${GOOS} GOARCH=${GOARCH} go build -ldflags "-X main.buildTime=`date --iso-8601=s` -X main.buildVersion=`git rev-parse HEAD | cut -c-7`" -o zk-exporter .
 
 release-linux:
 	GOOS=linux $(MAKE) build
