@@ -1,4 +1,4 @@
-# ZooKeeper Exporter
+# ZooKeeper Exporter [![Build Status](https://travis-ci.org/lucianjon/zk-exporter.svg?branch=master)](https://travis-ci.org/lucianjon/zk-exporter)
 
 Exposes prometheus metrics scraped from ZooKeeper via four letter word commands, see https://zookeeper.apache.org/doc/trunk/zookeeperAdmin.html#The+Four+Letter+Words
 
