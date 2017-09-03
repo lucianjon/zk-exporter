@@ -24,7 +24,7 @@ func newPoller(interval time.Duration, metrics map[string]*prometheus.GaugeVec, 
 
 func (p *zkPoller) pollForMetrics() {
 	for {
-		log.Println("poller: polling zk for metrics")
+		log.Printf("poller: polling zookeeper [%v] for metrics\n", p.zk.addr)
 		m, err := p.zk.fetchStats()
 		if err != nil {
 			log.Printf("poller: failed to fetch stats, err=%v\n", err)

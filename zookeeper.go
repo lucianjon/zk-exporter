@@ -24,14 +24,26 @@ func newZooKeeper(addr string) *zooKeeper {
 }
 
 func (zk *zooKeeper) fetchStats() (map[string]string, error) {
-	stats := zk.fetchMntrStats()
-	stats[zkOK] = zk.fetchOKStat()
+	stats, err := zk.fetchMntrStats()
+	if err != nil {
+		return stats, err
+	}
+
+	isOK, err := zk.fetchOKStat()
+	if err != nil {
+		return stats, err
+	}
+
+	stats[zkOK] = isOK
 	return stats, nil
 }
 
-func (zk *zooKeeper) fetchMntrStats() map[string]string {
+func (zk *zooKeeper) fetchMntrStats() (map[string]string, error) {
 	stats := make(map[string]string)
-	byts, _ := zk.sendCommand(monitorCMD) // TODO handle error
+	byts, err := zk.sendCommand(monitorCMD)
+	if err != nil {
+		return stats, err
+	}
 	scanner := bufio.NewScanner(bytes.NewReader(byts))
 	for scanner.Scan() {
 		splits := strings.Split(scanner.Text(), "\t")
@@ -44,12 +56,12 @@ func (zk *zooKeeper) fetchMntrStats() map[string]string {
 		}
 		stats[splits[0]] = splits[1]
 	}
-	return stats
+	return stats, nil
 }
 
-func (zk *zooKeeper) fetchOKStat() string {
-	byts, _ := zk.sendCommand(okCMD) // TODO handle error
-	return string(byts)
+func (zk *zooKeeper) fetchOKStat() (string, error) {
+	byts, err := zk.sendCommand(okCMD)
+	return string(byts), err
 }
 
 func (zk *zooKeeper) sendCommand(cmd string) ([]byte, error) {
