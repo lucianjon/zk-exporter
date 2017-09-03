@@ -1,11 +1,15 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
 	"strings"
+	"syscall"
 
 	"time"
 
@@ -37,6 +41,30 @@ func main() {
 		go p.pollForMetrics()
 	}
 
-	http.Handle("/metrics", prometheus.Handler())
-	log.Fatal(http.ListenAndServe(fmt.Sprintf("0.0.0.0:%d", port), nil))
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+
+	mux := http.NewServeMux()
+	mux.Handle("/metrics", prometheus.Handler())
+
+	srv := &http.Server{
+		Addr:         fmt.Sprintf(":%v", port),
+		Handler:      mux,
+		ReadTimeout:  30 * time.Second,
+		WriteTimeout: 30 * time.Second,
+	}
+
+	go func() {
+		_ = <-sigs
+		log.Println("main: received SIGINT or SIGTERM, shutting down")
+		context, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+		if err := srv.Shutdown(context); err != nil {
+			log.Printf("main: failed to shutdown endpoint with err=%#v\n", err)
+		}
+	}()
+
+	if err := srv.ListenAndServe(); err != http.ErrServerClosed {
+		log.Printf("main: failure while serving endpoint, err=%#v", err)
+	}
 }
