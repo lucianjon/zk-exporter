@@ -24,19 +24,20 @@ var (
 
 func init() {
 	flag.IntVar(&port, "port", 9120, "The port to serve the endpoint from.")
-	flag.StringVar(&servers, "servers", "localhost:2181", "Comma separated list of zk servers in the format host:port")
+	flag.StringVar(&servers, "servers", "", "Comma separated list of zk servers in the format host:port")
 	flag.DurationVar(&pollInterval, "pollinterval", 10*time.Second, "How often to poll zookeeper for metrics.")
 	flag.Parse()
 }
 
 func main() {
-	metrics := initMetrics()
-	servers := strings.Split(servers, ",")
-	if len(servers) == 0 {
+	ss := strings.Split(servers, ",")
+	if servers == "" || len(ss) == 0 {
 		log.Fatal("main: at least one zookeeper server is required")
 	}
 
-	for _, server := range servers {
+	metrics := initMetrics()
+
+	for _, server := range ss {
 		p := newPoller(pollInterval, metrics, newZooKeeper(server))
 		go p.pollForMetrics()
 	}
