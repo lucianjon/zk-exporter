@@ -1,0 +1,2 @@
+dockers:
+  - image: lucianjon/prometheus-zk-exporter
