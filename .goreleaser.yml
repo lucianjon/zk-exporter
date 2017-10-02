@@ -1,5 +1,5 @@
 builds:
- - main: .
+  - main: .
     binary: zk-exporter
     goos:
       - windows
