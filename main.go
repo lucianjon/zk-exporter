@@ -13,7 +13,7 @@ import (
 
 	"time"
 
-	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 var (
@@ -46,7 +46,7 @@ func main() {
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 
 	mux := http.NewServeMux()
-	mux.Handle("/metrics", prometheus.Handler())
+	mux.Handle("/metrics", promhttp.Handler())
 
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%v", port),
@@ -66,6 +66,6 @@ func main() {
 	}()
 
 	if err := srv.ListenAndServe(); err != http.ErrServerClosed {
-		log.Printf("main: failure while serving endpoint, err=%#v", err)
+		log.Printf("main: failure while serving endpoint, err=%#v\n", err)
 	}
 }

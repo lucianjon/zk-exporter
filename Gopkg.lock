@@ -11,7 +11,7 @@
   branch = "master"
   name = "github.com/golang/protobuf"
   packages = ["proto"]
-  revision = "17ce1425424ab154092bbb43af630bd647f3bb0d"
+  revision = "130e6b02ab059e7b717a096f397c5b60111cae74"
 
 [[projects]]
   name = "github.com/matttproud/golang_protobuf_extensions"
@@ -21,7 +21,7 @@
 
 [[projects]]
   name = "github.com/prometheus/client_golang"
-  packages = ["prometheus"]
+  packages = ["prometheus","prometheus/promhttp"]
   revision = "c5b7fccd204277076155f10851dad72b76a49317"
   version = "v0.8.0"
 
@@ -35,7 +35,7 @@
   branch = "master"
   name = "github.com/prometheus/common"
   packages = ["expfmt","internal/bitbucket.org/ww/goautoneg","model"]
-  revision = "bc8b88226a1210b016e9993b1d75f858c9c8f778"
+  revision = "2f17f4a9d485bf34b4bfaccc273805040e4f86c8"
 
 [[projects]]
   branch = "master"
@@ -46,6 +46,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7f836076c0a18dcc8372ea233f499a5e5d06c2a8542e017441825774aa94095d"
+  inputs-digest = "d26fb00b85e79280581e3e21855792ca0d1c72beacfa66fa2801310b84d598f2"
   solver-name = "gps-cdcl"
   solver-version = 1
