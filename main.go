@@ -20,10 +20,12 @@ var (
 	port         int
 	servers      string
 	pollInterval time.Duration
+	listenaddr   string
 )
 
 func init() {
 	flag.IntVar(&port, "port", 9120, "The port to serve the endpoint from.")
+        flag.StringVar(&listenaddr, "listenaddr", "", "Address to listen on")
 	flag.StringVar(&servers, "servers", "", "Comma separated list of zk servers in the format host:port")
 	flag.DurationVar(&pollInterval, "pollinterval", 10*time.Second, "How often to poll zookeeper for metrics.")
 	flag.Parse()
@@ -49,7 +51,7 @@ func main() {
 	mux.Handle("/metrics", promhttp.Handler())
 
 	srv := &http.Server{
-		Addr:         fmt.Sprintf(":%v", port),
+		Addr:         fmt.Sprintf("%v:%v", listenaddr, port),
 		Handler:      mux,
 		ReadTimeout:  30 * time.Second,
 		WriteTimeout: 30 * time.Second,
