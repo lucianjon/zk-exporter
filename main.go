@@ -25,7 +25,7 @@ var (
 
 func init() {
 	flag.IntVar(&port, "port", 9120, "The port to serve the endpoint from.")
-        flag.StringVar(&listenaddr, "listenaddr", "", "Address to listen on")
+	flag.StringVar(&listenaddr, "listenaddr", "", "Address to listen on")
 	flag.StringVar(&servers, "servers", "", "Comma separated list of zk servers in the format host:port")
 	flag.DurationVar(&pollInterval, "pollinterval", 10*time.Second, "How often to poll zookeeper for metrics.")
 	flag.Parse()
